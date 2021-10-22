@@ -228,16 +228,21 @@ local punchButton = widget.newButton(
 )
 
 
-
-
 ------slider functions-------
 
 local sliderBackground = display.newRoundedRect(1200,850,650, 350, 25)
   sliderBackground:setFillColor(0, 0, 0, 0.8)
 
--- Slider listener
-local function sliderListener( event )
-    print( "Slider at " .. event.value .. "%" )
+-- Size Slider listener
+local function sizeListener( event )
+      if(event.value <= 5) then
+        anim.xScale = 5; -- x scale of sprite
+        anim.yScale = 5; -- y scale of sprite
+      elseif(event.value > 15 and event.value < 100) then
+        anim.xScale = event.value * 0.3; -- x scale of sprite
+        anim.yScale = event.value * 0.3; -- y scale of sprite
+      end
+      
 end
 
 local sizeText = display.newText( 
@@ -252,16 +257,23 @@ local sizeText = display.newText(
 highText:setFillColor(1,1,1)
  
 -- Create the widget
-local slider = widget.newSlider(
+local sizeSlider = widget.newSlider(
     {
         x = 1300,
         y = 750,
         width = 400,
         value = 10,  -- Start slider at 10% (optional)
-        listener = sliderListener
+        listener = sizeListener
     }
 )
 
+
+-- Horizontal Movement Slider listener
+local function horMoveListener( event )
+      anim:setSequence("walk")
+      transition.to( anim, {time = 800, x = anim.x, y = anim.y, transition = easing.linear, onStart = startAnim, onComplete = endAnim} )
+      if (anim.x < display.contentWidth) then anim.x  = event.value*16; end --init x position 
+end
 
 local lowText = display.newText( 
   {
@@ -274,16 +286,20 @@ local lowText = display.newText(
 highText:setFillColor(1,1,1)
 
 -- Create the widget
-local slider = widget.newSlider(
+local horSlider = widget.newSlider(
     {
         x = 1300,
         y = 850,
         width = 400,
         value = 10,  -- Start slider at 10% (optional)
-        listener = sliderListener
+        listener = horMoveListener
     }
 )
 
+-- Horizontal Movement Slider listener
+local function rotateListener( event )
+  anim:rotate(1)
+end
 
 local lowText = display.newText( 
   {
@@ -296,12 +312,12 @@ local lowText = display.newText(
 highText:setFillColor(1,1,1)
 
 -- Create the widget
-local slider = widget.newSlider(
+local rotSlider = widget.newSlider(
     {
         x = 1300,
         y = 950,
         width = 400,
         value = 10,  -- Start slider at 10% (optional)
-        listener = sliderListener
+        listener = rotateListener
     }
 )
