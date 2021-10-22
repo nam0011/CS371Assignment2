@@ -1,4 +1,6 @@
 local widget = require("widget")
+local low = false; --checks if it is low
+local high = false; --checks if it is high
 
 --creation of background
 local background = display.newImageRect("triangles.png", 1920, 1080)
@@ -72,15 +74,18 @@ anim:setSequence("idle"); -- initial sequence
 
 
 
-
 local function highButtonPress(event)
   local switch = event.target
-  anim:setSequence("high kick") -- set to high kick
+  high = true --setting high to true for the high kick and right punch
+  low = false 
+  --anim:setSequence("high kick") -- set to high kick
 end
 
 local function lowButtonPress(event)
   local switch = event.target
-  anim:setSequence("high kick") -- set to low kick
+  high = false
+  low = true --setting the low to true for the low kick and right punch
+  --anim:setSequence("high kick") -- set to low kick
 end
 
 
@@ -96,10 +101,10 @@ end
 
 local function highKick(event)
     anim:setSequence("high kick")--start
-    transition.to( anim, {time = 2000, x = event.x, y = event.y, transition = easing.linear, onStart = startAnim, onComplete = endAnim} )
+    transition.to( anim, {time = 2000, x = anim.x, y = anim.y, transition = easing.linear, onStart = startAnim, onComplete = endAnim} )
 end
 
-Runtime:addEventListener( "tap", highKick ) --runtime evenet listener for screen to always be checking for event
+--Runtime:addEventListener( "tap", highKick ) --runtime evenet listener for screen to always be checking for event
 
 
 local radioGroup = display.newGroup()
@@ -125,7 +130,7 @@ local radioButtonLow = widget.newSwitch(
     style = "radio",
     id = "Low",
     initialSwitchState = false,
-    onPress = highButtonPress
+    onPress = lowButtonPress
   }
  )
 
@@ -159,14 +164,29 @@ highText:setFillColor(1,1,1)
 textGroup:insert(lowText)
 
 local function kickButtonEvent( event )
- 
+    if (low == true and high == false) then
+      anim:setSequence("low kick")
+      transition.to( anim, {time = 800, x = anim.x, y = anim.y, transition = easing.linear, onStart = startAnim, onComplete = endAnim} )
+    end
+    if (low == false and high == true) then
+      anim:setSequence("high kick")
+      transition.to( anim, {time = 800, x = anim.x, y = anim.y, transition = easing.linear, onStart = startAnim, onComplete = endAnim} )
+    end
     if ( "ended" == event.phase ) then
         print( "Kick was pressed and released" )
     end
+
 end
  
 local function punchButtonEvent( event )
- 
+    if (low == true and high == false) then
+      anim:setSequence("left punch")
+      transition.to( anim, {time = 800, x = anim.x, y = anim.y, transition = easing.linear, onStart = startAnim, onComplete = endAnim} )
+    end
+    if (low == false and high == true) then
+      anim:setSequence("right punch")
+      transition.to( anim, {time = 800, x = anim.x, y = anim.y, transition = easing.linear, onStart = startAnim, onComplete = endAnim} )
+    end
     if ( "ended" == event.phase ) then
         print( "Punch was pressed and released" )
     end
