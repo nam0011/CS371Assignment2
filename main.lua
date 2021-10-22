@@ -2,6 +2,9 @@ local widget = require("widget")
 local low = false; --checks if it is low
 local high = false; --checks if it is high
 
+local kickSound = audio.loadSound( "kick.mp3" )
+local punchSound = audio.loadSound( "punch.mp3" )
+
 --creation of background
 local background = display.newImageRect("triangles.png", 1920, 1080)
 background.x = display.contentCenterX
@@ -166,10 +169,12 @@ textGroup:insert(lowText)
 local function kickButtonEvent( event )
     if (low == true and high == false) then
       anim:setSequence("low kick")
+      audio.play( kickSound )
       transition.to( anim, {time = 800, x = anim.x, y = anim.y, transition = easing.linear, onStart = startAnim, onComplete = endAnim} )
     end
     if (low == false and high == true) then
       anim:setSequence("high kick")
+      audio.play( kickSound )
       transition.to( anim, {time = 800, x = anim.x, y = anim.y, transition = easing.linear, onStart = startAnim, onComplete = endAnim} )
     end
     if ( "ended" == event.phase ) then
@@ -181,10 +186,12 @@ end
 local function punchButtonEvent( event )
     if (low == true and high == false) then
       anim:setSequence("left punch")
+      audio.play( punchSound )
       transition.to( anim, {time = 800, x = anim.x, y = anim.y, transition = easing.linear, onStart = startAnim, onComplete = endAnim} )
     end
     if (low == false and high == true) then
       anim:setSequence("right punch")
+      audio.play( punchSound )
       transition.to( anim, {time = 800, x = anim.x, y = anim.y, transition = easing.linear, onStart = startAnim, onComplete = endAnim} )
     end
     if ( "ended" == event.phase ) then
