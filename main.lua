@@ -191,7 +191,7 @@ end
 
 -- Rotate Slider listener
 local function rotateListener( event )
-  anim:rotate(2) --rotate the player 2 degrees clockwise for each percentage of slider
+  anim:rotate(1.8) --rotate the player 1.8 degrees clockwise for each percentage of slider
 end
 
 
